@@ -12,38 +12,12 @@ var ScreenShare = (function () {
         var py = pointerEvent.offsetY ? pointerEvent.offsetY : pointerEvent.pageY - this.desktopElement.offsetTop;
         var event = {
             eventType: "Mouse",
-            action: "Right",
+            action: "RightClick",
             PointerY: py,
             PointerX: px
         };
         console.log(event);
     };
-    //  mouseDown(mouseEvent: MouseEvent) {
-    //   this.cancelUiEvts(mouseEvent);
-    //    this.mousedownEvt = mouseEvent;
-    //  }
-    /*mouseUp(mouseEvent: MouseEvent) {
-        this.cancelUiEvts(mouseEvent);
-        const dx = this.mousedownEvt.offsetX
-            ? this.mousedownEvt.offsetX
-            : this.mousedownEvt.pageX - this.desktopElement.offsetLeft;
-        const dy = this.mousedownEvt.offsetY
-            ? this.mousedownEvt.offsetY
-            : this.mousedownEvt.pageY - this.desktopElement.offsetTop;
-        const ux = mouseEvent.offsetX ? mouseEvent.offsetX : mouseEvent.pageX - this.desktopElement.offsetLeft;
-        const uy = mouseEvent.offsetY ? mouseEvent.offsetY : mouseEvent.pageY - this.desktopElement.offsetTop;
-
-        const event = {
-            eventType: "Mouse",
-            action: "Left",
-            DownY: dy,
-            DownX: dx,
-            PointerY: uy,
-            PointerX: ux
-        };
-        console.log(event);
-        this.mousedownEvt = null;
-    }*/
     ScreenShare.prototype.mouseMove = function (mouseEvent) {
         this.mouseMoveEvt = mouseEvent;
     };

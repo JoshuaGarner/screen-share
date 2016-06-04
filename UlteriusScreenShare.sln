@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UlteriusScreenShare", "UlteriusScreenShare\UlteriusScreenShare.csproj", "{D91B9FDB-9412-4658-98E6-476576A16265}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UlteriusScreenShareExample", "UlteriusScreenShareExample\UlteriusScreenShareExample.csproj", "{EA65F94D-D15B-401A-AAF2-BC0298FB0637}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UlteriusScreenShareClient", "UlteriusScreenShareClient\UlteriusScreenShareClient.csproj", "{6412E095-8813-4719-8064-CE1E034E6B0A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D91B9FDB-9412-4658-98E6-476576A16265}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D91B9FDB-9412-4658-98E6-476576A16265}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D91B9FDB-9412-4658-98E6-476576A16265}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D91B9FDB-9412-4658-98E6-476576A16265}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA65F94D-D15B-401A-AAF2-BC0298FB0637}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA65F94D-D15B-401A-AAF2-BC0298FB0637}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA65F94D-D15B-401A-AAF2-BC0298FB0637}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA65F94D-D15B-401A-AAF2-BC0298FB0637}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6412E095-8813-4719-8064-CE1E034E6B0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6412E095-8813-4719-8064-CE1E034E6B0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6412E095-8813-4719-8064-CE1E034E6B0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6412E095-8813-4719-8064-CE1E034E6B0A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

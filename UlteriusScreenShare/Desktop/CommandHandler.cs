@@ -67,7 +67,7 @@ namespace UlteriusScreenShare.Desktop
                     switch (eventAction)
                     {
                         case "Full":
-                            Console.WriteLine("Request for new frame");
+
                             HandleFullFrame(client);
                             break;
                     }
@@ -117,27 +117,33 @@ namespace UlteriusScreenShare.Desktop
 
         private void HandleDoubleClick()
         {
-            _simulator.Mouse.LeftButtonDoubleClick();
+            Console.WriteLine("Double click fired");
+            _simulator.Mouse.LeftButtonClick();
         }
 
         private void HandleMouseDown()
         {
+            Console.WriteLine("Mouse down");
             _simulator.Mouse.LeftButtonDown();
+          
         }
 
         private void HandleMouseUp()
         {
-            _simulator.Mouse.LeftButtonUp();
+            Console.WriteLine("Mouse up");
+          _simulator.Mouse.LeftButtonUp();
         }
 
         private void HandleRightClick()
         {
+            Console.WriteLine("Right click");
             _simulator.Mouse.RightButtonClick();
         }
 
         private void HandleLeftClick()
         {
-            _simulator.Mouse.LeftButtonClick();
+            Console.WriteLine("Left click");
+           // _simulator.Mouse.LeftButtonClick();
         }
 
         private void MoveMouse(JObject packet)

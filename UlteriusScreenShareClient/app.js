@@ -88,6 +88,7 @@ var ScreenShare = (function () {
     };
     ScreenShare.prototype.start = function () {
         var _this = this;
+        var keys = [];
         this.desktopElement.addEventListener("contextmenu", function (e) {
             _this.rightclick(e);
         });
@@ -117,16 +118,29 @@ var ScreenShare = (function () {
         this.desktopElement.addEventListener("mouseup", function (evt) {
             _this.handleMouseUp(evt);
         }, false);
-        this.desktopElement.addEventListener("keydown", function (e) {
-            console.log(e.keyCode);
+        document.addEventListener("keydown", function (e) {
+            e.preventDefault();
+            keys[e.keyCode] = e.keyCode;
+            var keysArray = _this.getNumberArray(keys);
+            console.log(keysArray);
         }, false);
-        this.desktopElement.addEventListener("keyup", function (e) {
-            console.log(e.keyCode);
+        document.addEventListener("keyup", function (e) {
+            e.preventDefault();
+            keys[e.keyCode] = false;
         }, false);
         setTimeout(function () { _this.requestFrame(); }, 200);
     };
     ScreenShare.prototype.stop = function () {
         clearTimeout(this.timerToken);
+    };
+    ScreenShare.prototype.getNumberArray = function (arr) {
+        var newArr = new Array();
+        for (var i = 0; i < arr.length; i++) {
+            if (typeof arr[i] == "number") {
+                newArr[newArr.length] = arr[i];
+            }
+        }
+        return newArr;
     };
     return ScreenShare;
 }());

@@ -1,15 +1,19 @@
 ﻿#region
 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using WindowsInput;
+using WindowsInput.Native;
 using Ionic.Zlib;
 using Newtonsoft.Json.Linq;
 using UlteriusScreenShare.Websocket;
+using UlteriusScreenShare.Win32Api;
 using vtortola.WebSockets;
 
 #endregion
@@ -60,7 +64,13 @@ namespace UlteriusScreenShare.Desktop
                 }
                 else if (eventType.Equals("Keyboard"))
                 {
-                    Console.WriteLine("Keyboard event");
+                    switch (eventAction)
+                    {
+                        case "KeyDown":
+                            Console.WriteLine("Key Down");
+                            HandleKeyDown(packet);
+                            break;
+                    }
                 }
                 else if (eventType.Equals("Frame"))
                 {
@@ -76,6 +86,46 @@ namespace UlteriusScreenShare.Desktop
             catch (Exception)
             {
                 //who cares
+            }
+        }
+
+        private string ToHex(int value)
+        {
+            return $"0x{value:X}";
+        }
+
+        private void HandleKeyDown(JObject packet)
+        {
+
+            try
+            {
+                var keyCodes = packet["KeyCodes"];
+                var codes = keyCodes.Select(code => ToHex(int.Parse(code.ToString()))).Select(hexString => Convert.ToInt32(hexString, 16)).ToList();
+                Console.WriteLine(codes.Count);
+                if (codes.Count >= 2)
+                {
+                    foreach (var code in codes)
+                    {
+                        var virtualKey = (VirtualKeyCode) code;
+                        _simulator.Keyboard.KeyDown(virtualKey);
+                    }
+                    //fuck.gif
+                    foreach (var code in codes)
+                    {
+                        var virtualKey = (VirtualKeyCode) code;
+                        _simulator.Keyboard.KeyUp(virtualKey);
+                    }
+                }
+                else
+                {
+                    var virtualKey = (VirtualKeyCode)codes[0];
+                    _simulator.Keyboard.KeyPress(virtualKey);
+                }
+               
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
             }
         }
 
@@ -125,13 +175,12 @@ namespace UlteriusScreenShare.Desktop
         {
             Console.WriteLine("Mouse down");
             _simulator.Mouse.LeftButtonDown();
-          
         }
 
         private void HandleMouseUp()
         {
             Console.WriteLine("Mouse up");
-          _simulator.Mouse.LeftButtonUp();
+            _simulator.Mouse.LeftButtonUp();
         }
 
         private void HandleRightClick()
@@ -143,7 +192,7 @@ namespace UlteriusScreenShare.Desktop
         private void HandleLeftClick()
         {
             Console.WriteLine("Left click");
-           // _simulator.Mouse.LeftButtonClick();
+            // _simulator.Mouse.LeftButtonClick();
         }
 
         private void MoveMouse(JObject packet)

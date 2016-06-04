@@ -2,6 +2,7 @@
 
 using System;
 using System.Runtime.InteropServices;
+using WindowsInput.Native;
 
 #endregion
 
@@ -159,6 +160,7 @@ namespace UlteriusScreenShare.Win32Api
             mouseInput.mkhi.mi.DwFlags = MouseEventFlags.MouseeventfMove | MouseEventFlags.MouseeventfAbsolute;
             SendInput(1, ref mouseInput, Marshal.SizeOf(new Input()));
         }
+
 
         [StructLayout(LayoutKind.Sequential)]
         public struct Bitmapinfoheader

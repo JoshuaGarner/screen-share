@@ -108,6 +108,7 @@
         };
     }
     start() {
+        var keys = [];
         this.desktopElement.addEventListener("contextmenu",
             e => {
 
@@ -153,14 +154,18 @@
             },
             false);
 
-        this.desktopElement.addEventListener("keydown",
-            e => {
-                console.log(e.keyCode);
+       document.addEventListener("keydown",
+           e => {
+                e.preventDefault();
+                keys[e.keyCode] = e.keyCode;
+                var keysArray = this.getNumberArray(keys);
+                console.log(keysArray);
             },
             false);
-        this.desktopElement.addEventListener("keyup",
-            e => {
-                console.log(e.keyCode);
+       document.addEventListener("keyup",
+           e => {
+                e.preventDefault();
+                keys[e.keyCode] = false;
             },
             false);
         setTimeout(() => { this.requestFrame(); }, 200);
@@ -169,8 +174,19 @@
     stop() {
         clearTimeout(this.timerToken);
     }
+    getNumberArray(arr: any) {
+        var newArr = new Array();
+        for (var i = 0; i < arr.length; i++) {
+            if (typeof arr[i] == "number") {
+                newArr[newArr.length] = arr[i];
+            }
+        }
+        return newArr;
+    }
 
 }
+
+
 
 window.onload = () => {
     var el = document.getElementById("desktop");

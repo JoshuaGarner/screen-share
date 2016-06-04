@@ -2,12 +2,15 @@
 
 using System;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Globalization;
+using System.IO;
 using System.Windows.Forms;
 using WindowsInput;
-using WindowsInput.Native;
+using Ionic.Zlib;
 using Newtonsoft.Json.Linq;
-using UlteriusScreenShare.Win32Api;
+using UlteriusScreenShare.Websocket;
+using vtortola.WebSockets;
 
 #endregion
 
@@ -15,10 +18,16 @@ namespace UlteriusScreenShare.Desktop
 {
     public class CommandHandler
     {
+        private readonly ConnectionHandler _connectionHandler;
         private readonly Screen[] _screens = Screen.AllScreens;
-        private readonly  InputSimulator _simulator = new InputSimulator();
+        private readonly InputSimulator _simulator = new InputSimulator();
 
-        public void ProcessCommand(string message)
+        public CommandHandler(ConnectionHandler connectionHandler)
+        {
+            _connectionHandler = connectionHandler;
+        }
+
+        public void ProcessCommand(WebSocket client, string message)
         {
             try
             {
@@ -51,6 +60,17 @@ namespace UlteriusScreenShare.Desktop
                 }
                 else if (eventType.Equals("Keyboard"))
                 {
+                    Console.WriteLine("Keyboard event");
+                }
+                else if (eventType.Equals("Frame"))
+                {
+                    switch (eventAction)
+                    {
+                        case "Full":
+                            Console.WriteLine("Request for new frame");
+                            HandleFullFrame(client);
+                            break;
+                    }
                 }
             }
             catch (Exception)
@@ -59,10 +79,47 @@ namespace UlteriusScreenShare.Desktop
             }
         }
 
+        private void HandleFullFrame(WebSocket client)
+        {
+            using (var jpegStream = new MemoryStream())
+            {
+                var screenGrab = Capture.CaptureDesktop();
+                screenGrab.Save(jpegStream, ImageFormat.Jpeg);
+                var compressed = ZlibStream.CompressBuffer(jpegStream.ToArray());
+                SendFrameData(client, compressed);
+            }
+        }
+
+        private void SendFrameData(WebSocket client, byte[] compressed)
+        {
+            AuthClient authClient;
+            if (_connectionHandler.Clients.TryGetValue(client.GetHashCode().ToString(), out authClient))
+            {
+                if (authClient.Authenticated && client.IsConnected)
+                {
+                    try
+                    {
+                        using (var messageWriter = client.CreateMessageWriter(WebSocketMessageType.Binary))
+                        {
+                            using (var stream = new MemoryStream(compressed))
+                            {
+                                stream.CopyTo(messageWriter);
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
+                }
+            }
+        }
+
         private void HandleDoubleClick()
         {
             _simulator.Mouse.LeftButtonDoubleClick();
         }
+
         private void HandleMouseDown()
         {
             _simulator.Mouse.LeftButtonDown();
@@ -75,10 +132,9 @@ namespace UlteriusScreenShare.Desktop
 
         private void HandleRightClick()
         {
-         
             _simulator.Mouse.RightButtonClick();
         }
-       
+
         private void HandleLeftClick()
         {
             _simulator.Mouse.LeftButtonClick();

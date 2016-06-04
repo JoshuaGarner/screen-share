@@ -18,7 +18,7 @@ namespace UlteriusScreenShare.Websocket
         public ConnectionHandler(WebSocketEventListener server)
         {
             Clients = new ConcurrentDictionary<string, AuthClient>();
-            _commandHandler = new CommandHandler();
+            _commandHandler = new CommandHandler(this);
             _server = server;
             _server.OnConnect += HandleConnect;
             _server.OnDisconnect += HandleDisconnect;
@@ -33,7 +33,7 @@ namespace UlteriusScreenShare.Websocket
 
         private void HandleMessage(WebSocket websocket, string message)
         {
-            _commandHandler.ProcessCommand(message);
+            _commandHandler.ProcessCommand(websocket, message);
         }
 
         private void HandleDisconnect(WebSocket websocket)
@@ -54,31 +54,7 @@ namespace UlteriusScreenShare.Websocket
             }
         }
 
-        public void SendFrameData(byte[] compressed)
-        {
-            //Console.WriteLine("Compressed data " + compressed.Length);
-            foreach (var client in Clients)
-            {
-                var authClient = client.Value;
-                if (authClient.Authenticated && authClient.Client.IsConnected)
-                {
-                  //  Console.WriteLine("Sending frame data");
-                    try
-                    {
-                        using (var messageWriter = authClient.Client.CreateMessageWriter(WebSocketMessageType.Binary))
-                        {
-                            using (var stream = new MemoryStream(compressed))
-                            {
-                                stream.CopyTo(messageWriter);
-                            }
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine(e.Message);
-                    }
-                }
-            }
-        }
+       
+        
     }
 }

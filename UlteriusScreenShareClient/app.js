@@ -106,6 +106,12 @@ var ScreenShare = (function () {
             };
         }
     };
+    ScreenShare.prototype.requestFrame = function () {
+        var packetEvent = {
+            eventType: "Frame",
+            action: "Full"
+        };
+    };
     ScreenShare.prototype.start = function () {
         var _this = this;
         this.desktopElement.addEventListener("contextmenu", function (e) {
@@ -143,6 +149,7 @@ var ScreenShare = (function () {
         this.desktopElement.addEventListener("keyup", function (e) {
             console.log(e.keyCode);
         }, false);
+        setTimeout(function () { _this.requestFrame(); }, 200);
     };
     ScreenShare.prototype.stop = function () {
         clearTimeout(this.timerToken);

@@ -128,6 +128,12 @@
             };
         }
     }
+    requestFrame() {
+        const packetEvent = {
+            eventType: "Frame",
+            action: "Full"
+        };
+    }
     start() {
         this.desktopElement.addEventListener("contextmenu",
             e => {
@@ -184,8 +190,7 @@
                 console.log(e.keyCode);
             },
             false);
-
-
+        setTimeout(() => { this.requestFrame(); }, 200);
     }
 
     stop() {

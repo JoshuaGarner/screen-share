@@ -5,9 +5,9 @@ Remote desktop powered by C# and websockets.
 
 - [x] Compression
 - [ ] Partial Frame Updating
-- [ ] Keyboard input
-- [ ] Fix Mouse Events
-- [ ] Increase peformance
+- [x] Keyboard input
+- [x] Fix Mouse Events
+- [x] Increase peformance
 - [ ] Screen Selection
-- [ ] AES Encryption
-- [ ] Password Authentication
+- [x] AES Encryption
+- [x] Password Authentication

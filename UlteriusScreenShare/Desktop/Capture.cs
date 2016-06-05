@@ -2,14 +2,23 @@
 
 using System;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.Runtime.InteropServices;
 using UlteriusScreenShare.Win32Api;
-
 #endregion
 
 namespace UlteriusScreenShare.Desktop
 {
     internal class Capture
     {
+      
+        public static Bitmap CaptureDxScreen()
+        {
+          //No real pointRe
+            return null;
+
+        }
+
         public static Bitmap CaptureDesktop()
         {
             Bitmap bmp = null;
@@ -41,7 +50,7 @@ namespace UlteriusScreenShare.Desktop
                         Gdi.DeleteDC(hMemDc);
                         bmp = Image.FromHbitmap(hBitmap);
                         Gdi.DeleteObject(hBitmap);
-                        GC.Collect();
+                        // GC.Collect();
                     }
                 }
                 finally

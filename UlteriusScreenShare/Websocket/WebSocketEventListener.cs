@@ -19,7 +19,7 @@ namespace UlteriusScreenShare.Websocket
 
     public delegate void WebSocketEventListenerOnError(WebSocket webSocket, Exception error);
 
-    public class WebSocketEventListener : IDisposable
+    internal class WebSocketEventListener : IDisposable
     {
         private readonly WebSocketListener _listener;
 

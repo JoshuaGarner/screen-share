@@ -48,6 +48,7 @@ namespace UlteriusScreenShare.Websocket
         {
             _listener.Start();
             Task.Run(ListenAsync);
+
         }
 
         public void Stop()

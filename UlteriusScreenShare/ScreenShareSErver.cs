@@ -1,7 +1,9 @@
 ﻿#region
 
 using System;
+using System.Linq;
 using System.Net;
+using System.Net.NetworkInformation;
 using System.Security;
 using System.Threading;
 using UlteriusScreenShare.Websocket;
@@ -14,18 +16,20 @@ namespace UlteriusScreenShare
 {
     public class ScreenShareServer
     {
-        private readonly string _serverName;
-        private readonly SecureString _password;
         private readonly ConnectionHandler _connectionHandler;
+        private readonly SecureString _password;
+        private readonly int _port;
         private readonly WebSocketEventListener _server;
+        private readonly string _serverName;
 
         public ScreenShareServer(string serverName, SecureString password, IPAddress address, int port)
         {
+            _port = port;
             _serverName = serverName;
             _password = password;
 
             var cancellation = new CancellationTokenSource();
-            var endpoint = new IPEndPoint(address, port);
+            var endpoint = new IPEndPoint(address, _port);
             _server = new WebSocketEventListener(endpoint, new WebSocketListenerOptions
             {
                 PingTimeout = TimeSpan.FromSeconds(15),
@@ -39,16 +43,37 @@ namespace UlteriusScreenShare
             _connectionHandler = new ConnectionHandler(_serverName, _password, _server);
         }
 
-
-        public void Start()
+        public bool PortAvailable()
         {
-            _server.Start();
-            Console.WriteLine("ScreenShareServer Started");
+            var ipGlobalProperties = IPGlobalProperties.GetIPGlobalProperties();
+            var tcpConnInfoArray = ipGlobalProperties.GetActiveTcpListeners();
+            return tcpConnInfoArray.All(endpoint => endpoint.Port != _port);
         }
 
-        public void Stop()
+        public bool Start()
         {
-            _server.Stop();
+            try
+            {
+                _server.Start();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public bool Stop()
+        {
+            try
+            {
+                _server.Stop();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }

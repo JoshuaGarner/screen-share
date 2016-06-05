@@ -32,8 +32,8 @@ namespace UlteriusScreenShare.Websocket.Server
         public void ProcessCommand(WebSocket client, string message)
         {
             var packet = JObject.Parse(message);
-            var eventType = (string) packet["eventType"];
-            var eventAction = (string) packet["action"];
+            var eventType = (string) packet["EventType"];
+            var eventAction = (string) packet["Action"];
             if (eventType.Equals("Mouse"))
             {
                 switch (eventAction)

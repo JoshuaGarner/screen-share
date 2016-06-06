@@ -54,12 +54,14 @@ namespace UlteriusScreenShare.Websocket
         public void Stop()
         {
             _listener.Stop();
+
         }
 
         private async Task ListenAsync()
         {
             while (_listener.IsStarted)
             {
+                
                 try
                 {
                     var websocket = await _listener.AcceptWebSocketAsync(CancellationToken.None)

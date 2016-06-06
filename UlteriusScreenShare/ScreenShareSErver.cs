@@ -54,8 +54,12 @@ namespace UlteriusScreenShare
         {
             try
             {
-                _server.Start();
-                return true;
+                if (PortAvailable())
+                {
+                    _server.Start();
+                    return true;
+                }
+                return false;
             }
             catch (Exception)
             {
@@ -67,8 +71,12 @@ namespace UlteriusScreenShare
         {
             try
             {
-                _server.Stop();
-                return true;
+                if (!PortAvailable())
+                {
+                    _server.Stop();
+                    return true;
+                }
+                return false;
             }
             catch (Exception)
             {

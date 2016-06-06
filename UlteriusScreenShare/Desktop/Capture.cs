@@ -11,14 +11,6 @@ namespace UlteriusScreenShare.Desktop
 {
     internal class Capture
     {
-      
-        public static Bitmap CaptureDxScreen()
-        {
-          //No real pointRe
-            return null;
-
-        }
-
         public static Bitmap CaptureDesktop()
         {
             Bitmap bmp = null;
